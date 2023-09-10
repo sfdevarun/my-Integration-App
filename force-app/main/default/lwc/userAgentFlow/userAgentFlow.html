@@ -1,0 +1,11 @@
+<template>
+    <lightning-card title="User-Agent Flow" icon-name="action:announcement">
+        <div class="slds-p-around_medium">
+            <lightning-input label="Client Id" value={clientid} onchange={handleClientIdChange} placeholder="Ex: 3MVG9SemV5D80oBc_4KF2WNxqF4oFuu_3r7JbSX1n9fvF_lgKMAfyXVX592tkkHiZBzBTOaqM1WBIN_b80ReY"></lightning-input>
+            <lightning-input label="RedirectURI or Callback URL" value={redirectURI} onchange={handleRedirectURIChange} placeholder="Ex: https://login.salesforce.com/callback or https://login.salesforce.com/services/oauth2/success (for refresh token)"></lightning-input>
+            <lightning-input label="Authorization Endpoint" value={authURL} onchange={handleAuthURLChange} placeholder="Ex: https://login.salesforce.com/services/oauth2/authorize"></lightning-input>
+            <lightning-input label="State" value={state} onchange={handleStateChange} placeholder="Ex: myTest"></lightning-input>
+            <div class="slds-p-top--small"><lightning-button label="Get Access Token" variant="brand" onclick={getAccessToken}></lightning-button></div>
+        </div>
+    </lightning-card>
+</template>

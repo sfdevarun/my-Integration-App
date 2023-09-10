@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConnectedApp xmlns="http://soap.sforce.com/2006/04/metadata">
+    <contactEmail>arun.jaiswal@salesforce.com</contactEmail>
+    <label>SAML Bearer Assertion Flow App</label>
+    <logoUrl>https://db000000fx1yhmal-dev-ed.develop.file.force.com/servlet/servlet.ImageServer?id=015B0000001ad4j&amp;oid=00DB000000FX1Yh</logoUrl>
+    <oauthConfig>
+        <callbackUrl>https://login.salesforce.com/services/oauth2/callback</callbackUrl>
+        <certificate>MIIEFzCCAv8CFHN6mZTtQvB4IMTB2FgvFwXl4wgXMA0GCSqGSIb3DQEBCwUAMIHHMQswCQYDVQQGEwJVUzETMBEGA1UECAwKQ2FsaWZvcm5pYTERMA8GA1UEBwwIU2FuIEpvc2UxEzARBgNVBAoMClNhbGVzZm9yY2UxEzARBgNVBAsMCkJsYWNrYWRpdW0xOjA4BgNVBAMMMWRiMDAwMDAwZngxejFtYWwtZGV2LWVkLmRldmVsb3AubXkuc2FsZXNmb3JjZS5jb20xKjAoBgkqhkiG9w0BCQEWG2FydW4uamFpc3dhbEBzYWxlc2ZvcmNlLmNvbTAeFw0yMzA1MjcxMjQ0MjlaFw0yNDA1MjYxMjQ0MjlaMIHHMQswCQYDVQQGEwJVUzETMBEGA1UECAwKQ2FsaWZvcm5pYTERMA8GA1UEBwwIU2FuIEpvc2UxEzARBgNVBAoMClNhbGVzZm9yY2UxEzARBgNVBAsMCkJsYWNrYWRpdW0xOjA4BgNVBAMMMWRiMDAwMDAwZngxejFtYWwtZGV2LWVkLmRldmVsb3AubXkuc2FsZXNmb3JjZS5jb20xKjAoBgkqhkiG9w0BCQEWG2FydW4uamFpc3dhbEBzYWxlc2ZvcmNlLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKu9VTRj84hCCLpu65YTeluTktIlCq6X+lqPomJXqV8vOspmEXxVWVN4ccEJnVaFJVN/TBn3DTUsvrsGlrqU0yuOZg+1igUc6srqikC9TCtMl95kniuR/PORyLV9JbXSjzzNU/RyIXcNve8IWmij6G9xX0rbMEEL4LF5rYzclt47pvV25eLcCO2HO5M1xLeUcm9+tfZ+9eMooPW17n1z+Fbqk9LlXhNu3wm5+ni/qemCs1KqhT8xvIer0Q1Om6PMhB3yZwlJGqhX68vT8M2f0MJKMkJP8c+tSeiNwMHeayZt+KHEOTu7UezHVdPGugVcb50ZNHYlgW7h/OMMjuWTaHUCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAJgTPYAMTfeKdYAxV3EvA6st3kfOvV0HVZWi4EeMCbyiUbrglhsJcg1Z8ndwqkhL4LJQPI5+bP1CTSCWFwS+y6Mc0XVaVewIQ3+7NZLaKXt0zZ9Kw/Z3RlN/Ac0FuqnPpu8QZOFeT2KLj+59ASDKrfY5adOgwWuvb2mj0NT7bUq5/F3XfMkzdhtPmxdW0J8bsfsNmNNxuhBb61sJrN9qkoVqb1AwetYx6jqUpPPVz16M4KBVecvVM2+WmiVY3DP7HPM4lG62ugNJU/mxpSn+T6Ra9inY0gCMKPrQpJR58JOTx5H2qxX/9s2dbkupcUYfH/G87njFBc3h89wOwT7mJyw==</certificate>
+        <consumerKey>3MVG9SemV5D80oBc_4KF2WNxqF7snro9ibNgHO1DN1wfFKe66pkkB89VuXAWTQgNILYVe_TbWfXD_zT9XO5v6</consumerKey>
+        <isAdminApproved>true</isAdminApproved>
+        <isConsumerSecretOptional>false</isConsumerSecretOptional>
+        <isIntrospectAllTokens>false</isIntrospectAllTokens>
+        <isSecretRequiredForRefreshToken>true</isSecretRequiredForRefreshToken>
+        <scopes>Api</scopes>
+        <scopes>RefreshToken</scopes>
+    </oauthConfig>
+    <oauthPolicy>
+        <ipRelaxation>BYPASS</ipRelaxation>
+        <refreshTokenPolicy>infinite</refreshTokenPolicy>
+    </oauthPolicy>
+    <profileName>System Administrator</profileName>
+</ConnectedApp>

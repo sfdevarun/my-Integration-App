@@ -1,0 +1,18 @@
+<template>
+    <lightning-card title="Web Server Flow" icon-name="action:announcement">
+        <div class="slds-p-around_medium">
+            <template lwc:if={check}>
+                <lightning-input label="Client Id" value={clientid} onchange={handleClientIdChange} placeholder="Ex: 3MVG9SemV5D80oBc_4KF2WNxqF4oFuu_3r7JbSX1n9fvF_lgKMAfyXVX592tkkHiZBzBTOaqM1WBIN_b80ReY"></lightning-input>
+                <lightning-input label="RedirectURI or Callback URL" value={redirectURI} onchange={handleRedirectURIChange} placeholder="Ex: https://login.salesforce.com/callback"></lightning-input>
+                <lightning-input label="Authorization Endpoint" value={authorizeEndpoint} onchange={handleAuthorizeEndpointChange} placeholder="Ex: https://login.salesforce.com/services/oauth2/authorize"></lightning-input>
+                <div class="slds-p-top--small"><lightning-button label="Get Authorization Code" variant="brand" onclick={getAuthCode}></lightning-button></div>
+            </template>
+            <template lwc:else>
+                <lightning-input label="Authorization Code" value={authorizationCode} onchange={handleAuthorizationCodeChange}></lightning-input>
+                <lightning-input label="Client Secret" type="password" value={clientsecret} onchange={handleClientSecretChange} placeholder="Ex: 3588CFBF973CED5178DFD9338BC72BF11E44F5518FEDCFB6FD2C723D4164CA78"></lightning-input>
+                <div class="slds-p-top--small"><lightning-button label="Get Access Token" variant="brand" onclick={getAccessToken}></lightning-button></div>
+            </template>
+            <div class="slds-p-top--small" if:true={sessionId}><b>Session ID: {sessionId}</b></div>
+        </div>
+    </lightning-card>
+</template>

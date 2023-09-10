@@ -1,0 +1,11 @@
+<template>
+    <lightning-checkbox-group name="OAuth Scopes"
+                              label="Available OAuth Scopes"
+                              options={options}
+                              value={selectedValues}
+                              onchange={handleChange}
+                              required
+                              message-when-value-missing={messageWhenValueMissing}
+                              ></lightning-checkbox-group>
+    <p><b>Selected Values are: {selectedValues}</b></p>
+</template>

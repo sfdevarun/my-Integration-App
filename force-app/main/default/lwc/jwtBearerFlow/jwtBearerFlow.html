@@ -1,0 +1,11 @@
+<template>
+    <lightning-card title="JWT Bearer Flow" icon-name="action:announcement">
+        <div class="slds-p-around_medium">
+            <lightning-input label="Subject" value={subject} onchange={handleSubjectChange} placeholder="Ex: jaiswalarun16-0era@force.com"></lightning-input>
+            <lightning-input label="Issuer" value={issuer} onchange={handleIssuerChange} placeholder="Ex: 3MVG9SemV5D80oBc_4KF2WNxqF5NH3vYnspZNQFUFkKV4GCh2SidlmwaXByvI63q2jXfkuQcBAW1OJaGXF0bi"></lightning-input>
+            <lightning-input label="Audience" value={audience} onchange={handleAudienceChange} placeholder="Ex: https://login.salesforce.com or https://test.salesforce.com"></lightning-input>
+            <div class="slds-p-top--small"><lightning-button label="Get Access Token" variant="brand" onclick={getAccessToken}></lightning-button></div>
+            <div class="slds-p-top--small" if:true={sessionId}><b>Session ID: {sessionId}</b></div>
+        </div>
+    </lightning-card>
+</template>
