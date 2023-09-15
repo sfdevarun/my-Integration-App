@@ -1,6 +1,6 @@
 public with sharing class UsernamePasswordController {
     @AuraEnabled
-    public static String getAccessToken(String username, String password, String clientId, String clientSecret) {
+    public static Map<Integer, String> getAccessToken(String username, String password, String clientId, String clientSecret) {
         HttpRequest request = new HttpRequest();
         request.setEndpoint('https://login.salesforce.com/services/oauth2/token');
         request.setMethod('POST');
@@ -13,12 +13,21 @@ public with sharing class UsernamePasswordController {
         
         Http http = new Http();
         HttpResponse response = http.send(request);
+        Map<Integer,String> resp = new Map<Integer,String>();
         
         if (response.getStatusCode() == 200) {
             Map<String, Object> jsonResponse = (Map<String, Object>)JSON.deserializeUntyped(response.getBody());
-            return (String)jsonResponse.get('access_token');
+            System.debug('response => ' + response.getBody());
+            System.debug('json response => ' + jsonResponse);
+            resp.put(200, (String)jsonResponse.get('access_token'));
+            return resp;
         } else {
-            // Handle error response
+            if (response.getStatusCode() == 400) {
+                System.debug('response => ' + response + ' ' + 'response Body => ' + response.getBody() + ' ' + 'response Status => ' + response.getStatus());
+                Map<String, Object> jsonResponse = (Map<String, Object>)JSON.deserializeUntyped(response.getBody());
+                resp.put(400, 'The error message is ' + (String)jsonResponse.get('error') + ' and description is ' + (String)jsonResponse.get('error_description') + ' and you made a ' + response.getStatus() + '. Please review your form parameters in order to fix this issue.');
+                return resp;
+            }
             return null;
         }
     }

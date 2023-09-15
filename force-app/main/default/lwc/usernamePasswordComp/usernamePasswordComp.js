@@ -4,10 +4,11 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class UsernamePasswordComp extends LightningElement {
     username = 'jaiswalarun16-0era@force.com';
-    password = 'Testabc@123I';
+    password = 'Iphone6@123I';
     clientId = '3MVG9SemV5D80oBc_4KF2WNxqF4oFuu_3r7JbSX1n9fvF_lgKMAfyXVX592tkkHiZBzBTOaqM1WBIN_b80ReY';
     clientSecret = '3588CFBF973CED5178DFD9338BC72BF11E44F5518FEDCFB6FD2C723D4164CA78';
     sessionId;
+    badRequest;
     handleUsernameChange(event) {
         this.username = event.target.value;
     }
@@ -29,8 +30,15 @@ export default class UsernamePasswordComp extends LightningElement {
             .then(result => {
                 // Handle access token response
                 console.log('Access Token:', result);
-                this.sessionId = result;
-                this.showToast('success', 'Access Token Generated', this.sessionId);
+                if (Object.keys(result)[0] === "200") {
+                    this.sessionId = result["200"];
+                    this.showToast('success', 'Access Token Generated', this.sessionId);
+                } else {
+                    if (Object.keys(result)[0] === "400") {
+                        this.badRequest = result["400"];
+                        this.showToast('error', 'Your status code is 400', this.badRequest);
+                    }
+                }
             })
             .catch(error => {
                 // Handle error response
@@ -39,7 +47,7 @@ export default class UsernamePasswordComp extends LightningElement {
             });
     }
     showToast(variant, title, message) {
-        const toastEvent = new ShowToastEvent({ variant, title, message });
+        const toastEvent = new ShowToastEvent({ variant, title, message, mode: 'sticky' });
         this.dispatchEvent(toastEvent);
     }
 }
