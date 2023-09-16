@@ -1,6 +1,6 @@
 public with sharing class JWTController {
     @AuraEnabled
-    public static string getAccessToken(String sub, String iss, String aud){
+    public static String getAccessToken(String sub, String iss, String aud){
         try {
             Auth.JWT jwt = new Auth.JWT();
             jwt.setSub(sub); 
@@ -24,7 +24,8 @@ public with sharing class JWTController {
             
             //Get the access token
             String accessToken = bearer.getAccessToken();
-            system.debug('Access Token-->'+accessToken);
+            System.debug('bearer => ' + bearer);
+            system.debug('Access Token-->'+ accessToken);
             return accessToken;
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());

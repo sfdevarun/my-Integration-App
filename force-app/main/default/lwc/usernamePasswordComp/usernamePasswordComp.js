@@ -44,10 +44,27 @@ export default class UsernamePasswordComp extends LightningElement {
                 // Handle error response
                 console.error('Error:', error);
                 this.showToast('error', 'Error', error.body.message);
+                this.showRemoteSiteUrlAddMessage(error.body.message);
             });
     }
     showToast(variant, title, message) {
         const toastEvent = new ShowToastEvent({ variant, title, message, mode: 'sticky' });
         this.dispatchEvent(toastEvent);
+    }
+    showRemoteSiteUrlAddMessage(errorMessage) {
+        const parts = errorMessage.split('endpoint = ');
+        if (parts.length >= 2) {
+            const endpointUrl = parts[1];
+            try {
+                const url = new URL(endpointUrl);
+                const baseUrl = url.protocol + '//' + url.host;
+                console.log('Base URL:', baseUrl);
+                this.showToast('info', 'Action', 'Please add the ' + baseUrl + ' URL to your Remote Site Settings.');
+            } catch (error) {
+                console.error('Error parsing URL:', error.message);
+            }
+        } else {
+            console.log('Endpoint not found in the error message.');
+        }
     }
 }
