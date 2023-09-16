@@ -11,18 +11,22 @@ export default class UsernamePasswordComp extends LightningElement {
     badRequest;
     handleUsernameChange(event) {
         this.username = event.target.value;
+        this.sessionId = '';
     }
 
     handlePasswordChange(event) {
         this.password = event.target.value;
+        this.sessionId = '';
     }
 
     handleClientIdChange(event) {
         this.clientId = event.target.value;
+        this.sessionId = '';
     }
 
     handleClientSecretChange(event) {
         this.clientSecret = event.target.value;
+        this.sessionId = '';
     }
 
     getAccessToken() {
@@ -48,7 +52,7 @@ export default class UsernamePasswordComp extends LightningElement {
             });
     }
     showToast(variant, title, message) {
-        const toastEvent = new ShowToastEvent({ variant, title, message, mode: 'sticky' });
+        const toastEvent = new ShowToastEvent({ variant, title, message });
         this.dispatchEvent(toastEvent);
     }
     showRemoteSiteUrlAddMessage(errorMessage) {
