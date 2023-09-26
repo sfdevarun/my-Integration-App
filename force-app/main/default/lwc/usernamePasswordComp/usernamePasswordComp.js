@@ -46,7 +46,7 @@ export default class UsernamePasswordComp extends LightningElement {
             })
             .catch(error => {
                 // Handle error response
-                console.error('Error:', error);
+                console.error('Error: ', error);
                 this.showToast('error', 'Error', error.body.message);
                 this.showRemoteSiteUrlAddMessage(error.body.message);
             });

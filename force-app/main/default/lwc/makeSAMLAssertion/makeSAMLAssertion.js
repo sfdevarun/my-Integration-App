@@ -33,35 +33,82 @@ export default class MakeSAMLAssertion extends LightningElement {
     9ndCUddT5SVSAf6lRr9trJay`;
     subject = 'jaiswalarun16-0era@force.com';
     sessionId;
+    exception;
+    exceptionMsg;
 
     handleIssuerChange(event) {
         this.issuer = event.target.value;
+        this.sessionId = '';
     }
 
     handleEncodedKeyChange(event) {
         this.encodedKey = event.target.value;
+        this.sessionId = '';
     }
 
     handleSubjectChange(event) {
         this.subject = event.target.value;
+        this.sessionId = '';
     }
 
     handleButtonClick() {
         makeSAMLAssertion({ issuer: this.issuer, encodedKey: this.encodedKey, subject: this.subject })
             .then((result) => {
-                // Handle successful response
                 console.log(result);
-                this.sessionId = JSON.parse(result).access_token;
-                this.showToast('success', 'Access Token Generated', this.sessionId);
+                const jsonObject = this.parseStringToJsonObject(result);
+                console.log(jsonObject);
+                if (jsonObject['error'] === undefined) {
+                    this.sessionId = jsonObject.access_token;
+                    this.showToast('success', 'Access Token Generated', this.sessionId);
+                } else {
+                    this.exceptionMsg = jsonObject.error_description;
+                    this.exception = jsonObject.error;
+                    this.showToast('error', 'Error is ' + this.exception, this.exceptionMsg);
+                }
             })
             .catch((error) => {
-                // Handle error
                 this.showToast('error', 'Error', error.body.message);
+                if (error.body.message.includes("Unauthorized endpoint, please check Setup->Security->Remote site settings. endpoint =")) {
+                    this.showRemoteSiteUrlAddMessage(error.body.message);
+                }
             });
     }
 
     showToast(variant, title, message) {
         const toastEvent = new ShowToastEvent({ variant, title, message });
         this.dispatchEvent(toastEvent);
+    }
+
+    showRemoteSiteUrlAddMessage(errorMessage) {
+        const parts = errorMessage.split('endpoint = ');
+        if (parts.length >= 2) {
+            const endpointUrl = parts[1];
+            try {
+                const url = new URL(endpointUrl);
+                const baseUrl = url.protocol + '//' + url.host;
+                console.log('Base URL:', baseUrl);
+                this.showToast('info', 'Action', 'Please add the ' + baseUrl + ' URL to your Remote Site Settings.');
+            } catch (error) {
+                console.error('Error parsing URL:', error.message);
+            }
+        } else {
+            console.log('Endpoint not found in the error message.');
+        }
+    }
+
+    parseStringToJsonObject(input) {
+        // Remove curly braces and split the string into key-value pairs
+    const keyValuePairs = input.substring(1, input.length - 1).split(', ');
+      
+        // Create a new object to store the key-value pairs
+    const jsonObject = {};
+      
+        // Iterate through the key-value pairs and add them to the object
+    keyValuePairs.forEach(pair => {
+        const [key, value] = pair.split('=');
+        jsonObject[key] = value;
+    });
+      
+    return jsonObject;
     }
 }

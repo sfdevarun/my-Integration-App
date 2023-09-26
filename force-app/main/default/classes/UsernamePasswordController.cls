@@ -25,7 +25,7 @@ public with sharing class UsernamePasswordController {
             if (response.getStatusCode() == 400) {
                 System.debug('response => ' + response + ' ' + 'response Body => ' + response.getBody() + ' ' + 'response Status => ' + response.getStatus());
                 Map<String, Object> jsonResponse = (Map<String, Object>)JSON.deserializeUntyped(response.getBody());
-                resp.put(400, 'The error message is ' + (String)jsonResponse.get('error') + ' and description is ' + (String)jsonResponse.get('error_description') + ' and you made a ' + response.getStatus() + '. Please review your form parameters in order to fix this issue.');
+                resp.put(400, 'The error message is ' + (String)jsonResponse.get('error') + ' and description is ' + (String)jsonResponse.get('error_description') + '. You made a ' + response.getStatus() + '. Please review your form parameters in order to fix this issue.');
                 return resp;
             }
             return null;

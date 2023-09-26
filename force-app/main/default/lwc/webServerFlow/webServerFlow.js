@@ -1,4 +1,4 @@
-import { LightningElement } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import getAuthCode from '@salesforce/apex/WebServerFlowController.getAuthCode';
 import getAccessToken from '@salesforce/apex/WebServerFlowController.getAccessToken';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
@@ -13,6 +13,9 @@ export default class WebServerFlow extends NavigationMixin(LightningElement) {
     authURL;
     authorizationCode;
     sessionId;
+    @api scopes = '';
+    toggle;
+    badRequest;
 
     handleClientIdChange(event) {
         this.clientid = event.target.value;
@@ -27,6 +30,7 @@ export default class WebServerFlow extends NavigationMixin(LightningElement) {
     handleAuthorizationCodeChange(event) {
         this.authorizationCode = event.target.value;
         console.log(this.authorizationCode);
+        this.sessionId = '';
     }
 
     handleClientSecretChange(event) {
@@ -39,18 +43,41 @@ export default class WebServerFlow extends NavigationMixin(LightningElement) {
         console.log(this.authorizeEndpoint);
     }
 
+    handleScopeChange(event) {
+        this.scopes = event.target.value;
+        console.log(this.scopes);
+    }
+
+    handleToggleChange(event) {
+        this.toggle = event.target.checked;
+    }
+
     getAuthCode() {
-        getAuthCode({ redirectURI: this.redirectURI, clientid: this.clientid, authorizeEndpoint: this.authorizeEndpoint })
+        if (this.scopes.length > 0) {
+            this.scopes.toString();
+        } else {
+            this.scopes = '';
+        }
+        getAuthCode({ redirectURI: this.redirectURI, clientid: this.clientid, authorizeEndpoint: this.authorizeEndpoint, scope: this.scopes })
             .then(result => {
-                console.log('Authorization Code', result);
-                this.authURL = result;
-                this.showToast('success', 'Successful Authorization', this.authURL);
-                this.navigateToURL(this.authURL);
+                if (Object.keys(result)[0] === "302") {
+                    this.authURL = result["302"];
+                    this.showToast('success', 'Successful Authorization', `You'll be navigated to the Salesforce login page, copy the code from the callback URL and paste here.`);
+                    this.navigateToURL(this.authURL);
+                } else {
+                    if (Object.keys(result)[0] === "400" || Object.keys(result)[0] === "404") {
+                        this.badRequest = result[Object.keys(result)[0]];
+                        this.showToast('error', 'Your status code is ' + Object.keys(result)[0], this.badRequest);
+                    }
+                }
                 // window.location.href = this.authURL;
                 // window.open(this.authURL, '_blank');
             })
             .catch(error => {
-                console.error('Error:', error);
+                console.error('Error:', error.body.message);
+                if (error.body.message.includes("Unauthorized endpoint, please check Setup->Security->Remote site settings. endpoint =")) {
+                    this.showRemoteSiteUrlAddMessage(error.body.message);
+                }
                 this.showToast('error', 'Error', error.body.message);
             });
     }
@@ -71,12 +98,35 @@ export default class WebServerFlow extends NavigationMixin(LightningElement) {
         getAccessToken({ authorizationCode: this.authorizationCode, redirectURI: this.redirectURI, clientid: this.clientid, clientsecret: this.clientsecret })
         .then(result => {
             console.log('Access Token:', result);
-            this.sessionId = result;
-            this.showToast('success', 'Access Token', this.sessionId);
+            if (Object.keys(result)[0] === "200") {
+                this.sessionId = result["200"];
+                this.showToast('success', 'Access Token Generated', this.sessionId);
+            } else {
+                if (Object.keys(result)[0] === "400") {
+                    this.badRequest = result["400"];
+                    this.showToast('error', 'Your status code is 400', this.badRequest);
+                }
+            }
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error('Error:', error.body.message);
             this.showToast('error', 'Error', error.body.message);
         });
+    }
+    showRemoteSiteUrlAddMessage(errorMessage) {
+        const parts = errorMessage.split('endpoint = ');
+        if (parts.length >= 2) {
+            const endpointUrl = parts[1];
+            try {
+                const url = new URL(endpointUrl);
+                const baseUrl = url.protocol + '//' + url.host;
+                console.log('Base URL:', baseUrl);
+                this.showToast('info', 'Action', 'Please add the ' + baseUrl + ' URL to your Remote Site Settings.');
+            } catch (error) {
+                console.error('Error parsing URL:', error.message);
+            }
+        } else {
+            console.log('Endpoint not found in the error message.');
+        }
     }
 }

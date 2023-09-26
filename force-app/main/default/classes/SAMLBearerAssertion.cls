@@ -85,8 +85,9 @@ private String preCannonicalizedResponse = '<saml:Assertion xmlns:saml="urn:oasi
         return output;
    }
    
-    public String postSAML()
+    public Map<Integer,Object> postSAML()
    {
+        Map<Integer,Object> resp = new Map<Integer,Object>();
         String saml = getResult();
         System.debug('\n===============SAML==============\n: ' + saml);
         http h = new http();
@@ -97,10 +98,11 @@ private String preCannonicalizedResponse = '<saml:Assertion xmlns:saml="urn:oasi
         req.setBody(param);
         
         req.setEndpoint(action);
-   httpResponse res = h.send(req);
+        httpResponse res = h.send(req);
         System.debug('\n\nRESPONSE: ' + res.getBody());
-        System.debug('\n\nRESPONSE: ' + res.getStatusCode() + '  ' + res.getStatus()); 
-       return res.getBody();
+        System.debug('\n\nRESPONSE: ' + res.getStatusCode() + '  ' + res.getStatus());
+        resp.put(res.getStatusCode(), (Object)JSON.deserializeUntyped(res.getBody()));
+        System.debug('test return Map >>> ' + resp);
+        return resp;
    }
-   
 }

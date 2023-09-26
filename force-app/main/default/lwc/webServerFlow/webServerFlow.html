@@ -1,10 +1,17 @@
 <template>
     <lightning-card title="Web Server Flow" icon-name="action:announcement">
+        <lightning-helptext class="slds-p-around_medium" content="If you don’t include scopes in your request, all scopes assigned to the connected app are requested." icon-name="utility:salesforce1" slot="actions"></lightning-helptext>
         <div class="slds-p-around_medium">
             <template lwc:if={check}>
                 <lightning-input label="Client Id" value={clientid} onchange={handleClientIdChange} placeholder="Ex: 3MVG9SemV5D80oBc_4KF2WNxqF4oFuu_3r7JbSX1n9fvF_lgKMAfyXVX592tkkHiZBzBTOaqM1WBIN_b80ReY"></lightning-input>
                 <lightning-input label="RedirectURI or Callback URL" value={redirectURI} onchange={handleRedirectURIChange} placeholder="Ex: https://login.salesforce.com/callback"></lightning-input>
                 <lightning-input label="Authorization Endpoint" value={authorizeEndpoint} onchange={handleAuthorizeEndpointChange} placeholder="Ex: https://login.salesforce.com/services/oauth2/authorize"></lightning-input>
+                <lightning-input class="slds-p-top_medium" type="toggle" label="Pass scopes statically" message-toggle-active="Pass scopes" message-toggle-inactive="" name="toggleScope" onchange={handleToggleChange}>
+                </lightning-input>
+                <template lwc:if={toggle}>
+                    <lightning-input label="Scope" value={scopes} onchange={handleScopeChange} placeholder="Ex: api web openid refresh_token">
+                    </lightning-input>
+                </template>
                 <div class="slds-p-top--small"><lightning-button label="Get Authorization Code" variant="brand" onclick={getAuthCode}></lightning-button></div>
             </template>
             <template lwc:else>

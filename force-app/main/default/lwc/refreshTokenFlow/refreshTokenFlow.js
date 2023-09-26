@@ -9,12 +9,12 @@ export default class RefreshTokenFlow extends LightningElement {
             { label: 'Access Analytics REST API resources (wave_api)', value: 'wave_api' },
             { label: 'Manage user data via APIs (api)', value: 'api' },
             { label: 'Access custom permissions (custom_permissions)', value: 'custom_permissions' },
-            { label: 'Access the identity URL service (id, profile, email, address, phone)', value: 'id, profile, email, address, phone' },
+            { label: 'Access the identity URL service (id, profile, email, address, phone)', value: 'id profile email address phone' },
             { label: 'Access Lightning applications (lightning)', value: 'lightning' },
             { label: 'Access content resources (content)', value: 'content' },
             { label: 'Access unique user identifiers (openid)', value: 'openid' },
             { label: 'Full access (full)', value: 'full' },
-            { label: 'Perform requests at any time (refresh_token, offline_access)', value: 'refresh_token, offline_access' },
+            { label: 'Perform requests at any time (refresh_token, offline_access)', value: 'refresh_token offline_access' },
             { label: 'Access Visualforce applications (visualforce)', value: 'visualforce' },
             { label: 'Manage user data via Web browsers (web)', value: 'web' },
             { label: 'Access chatbot services (chatbot_api)', value: 'chatbot_api' },
@@ -29,12 +29,32 @@ export default class RefreshTokenFlow extends LightningElement {
         ];
     }
 
-    messageWhenValueMissing = 'Bhai ek select kar le';
-
-    selectedValues = [];
+    messageWhenValueMissing = 'Please select atleast 1 value';
+    flag = false;
+    selectedValues = '';
+    unformattedString = [];
 
     handleChange(event) {
-        this.selectedValues = event.detail.value;
+        this.unformattedString = event.detail.value;
+        const inputArray = JSON.stringify(this.unformattedString);
+        let parsedArray = JSON.parse(inputArray);
+
+        let resultArray = [];
+
+        parsedArray.forEach(function (element) {
+        if (typeof element === 'string') {
+            resultArray.push(...element.split(','));
+        } else {
+            resultArray.push(element);
+        }
+        });
+        this.selectedValues = resultArray.join(' ');
+        if (this.selectedValues.length !== 0) {
+            this.flag = true;
+        } else { if (this.selectedValues.length === 0) {
+            this.flag =false;
+        }
+        }
         console.log(this.selectedValues);
     }
 }

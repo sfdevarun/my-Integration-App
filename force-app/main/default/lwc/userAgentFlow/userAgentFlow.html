@@ -5,6 +5,12 @@
             <lightning-input label="RedirectURI or Callback URL" value={redirectURI} onchange={handleRedirectURIChange} placeholder="Ex: https://login.salesforce.com/callback or https://login.salesforce.com/services/oauth2/success (for refresh token)"></lightning-input>
             <lightning-input label="Authorization Endpoint" value={authURL} onchange={handleAuthURLChange} placeholder="Ex: https://login.salesforce.com/services/oauth2/authorize"></lightning-input>
             <lightning-input label="State" value={state} onchange={handleStateChange} placeholder="Ex: myTest"></lightning-input>
+            <lightning-input class="slds-p-top_medium" type="toggle" label="Pass scopes statically" message-toggle-active="Pass scopes" message-toggle-inactive="" name="toggleScope" onchange={handleToggleChange}>
+            </lightning-input>
+            <template lwc:if={toggle}>
+                <lightning-input label="Scope" value={scopes} onchange={handleScopeChange} placeholder="Ex: api web openid refresh_token">
+                </lightning-input>
+            </template>
             <div class="slds-p-top--small"><lightning-button label="Get Access Token" variant="brand" onclick={getAccessToken}></lightning-button></div>
         </div>
     </lightning-card>

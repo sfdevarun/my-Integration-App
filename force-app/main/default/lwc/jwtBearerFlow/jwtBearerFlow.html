@@ -1,9 +1,18 @@
 <template>
     <lightning-card title="JWT Bearer Flow" icon-name="action:announcement">
+        <lightning-helptext icon-name="utility:salesforce1" content="Please pass the scopes either via refresh token flow or statically." class="slds-p-around_medium" slot="actions"></lightning-helptext>
         <div class="slds-p-around_medium">
             <lightning-input label="Subject" value={subject} onchange={handleSubjectChange} placeholder="Ex: jaiswalarun16-0era@force.com"></lightning-input>
             <lightning-input label="Issuer" value={issuer} onchange={handleIssuerChange} placeholder="Ex: 3MVG9SemV5D80oBc_4KF2WNxqF5NH3vYnspZNQFUFkKV4GCh2SidlmwaXByvI63q2jXfkuQcBAW1OJaGXF0bi"></lightning-input>
             <lightning-input label="Audience" value={audience} onchange={handleAudienceChange} placeholder="Ex: https://login.salesforce.com or https://test.salesforce.com"></lightning-input>
+            <lightning-input label="Certificate" value={certificate} onchange={handleCertificateChange} placeholder="Ex: salesforcetest"></lightning-input>
+            <lightning-input label="Token Endpoint" value={tokenEndpoint} onchange={handleTokenEndpointChange} placeholder="Ex: https://login.salesforce.com/services/oauth2/token or https://test.salesforce.com/services/oauth2/token"></lightning-input>
+            <lightning-input class="slds-p-top_medium" type="toggle" label="Pass scopes statically" message-toggle-active="Pass scopes" message-toggle-inactive="" name="toggleScope" onchange={handleToggleChange}>
+            </lightning-input>
+            <template lwc:if={toggle}>
+                <lightning-input label="Scope" value={scopes} onchange={handleScopeChange} placeholder="Ex: api web openid refresh_token">
+                </lightning-input>
+            </template>
             <div class="slds-p-top--small"><lightning-button label="Get Access Token" variant="brand" onclick={getAccessToken}></lightning-button></div>
             <div class="slds-p-top--small" if:true={sessionId}><b>Session ID: {sessionId}</b></div>
         </div>

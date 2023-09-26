@@ -1,11 +1,23 @@
 <template>
-    <lightning-checkbox-group name="OAuth Scopes"
+    <div class="slds-p-around--x-large" >
+        <lightning-card title="Refresh Token Flow" icon-name="action:announcement">
+            <lightning-checkbox-group name="OAuth Scopes"
                               label="Available OAuth Scopes"
                               options={options}
                               value={selectedValues}
                               onchange={handleChange}
                               required
-                              message-when-value-missing={messageWhenValueMissing}
+                              message-when-value-missing={messageWhenValueMissing} 
+                              class="slds-p-around--medium"
                               ></lightning-checkbox-group>
-    <p><b>Selected Values are: {selectedValues}</b></p>
+                              <template lwc:if={flag}>
+                                <p><b class="slds-p-around--medium slds-text-color_success slds-text-heading--small">Selected Values are: {selectedValues}</b></p>
+                              </template>
+        </lightning-card>
+    </div>
+    <div class="slds-p-around--x-large" ><c-username-password-comp></c-username-password-comp></div>
+    <div class="slds-p-around--x-large" ><c-web-server-flow scopes={selectedValues}></c-web-server-flow></div>
+    <div class="slds-p-around--x-large" ><c-user-agent-flow scopes={selectedValues}></c-user-agent-flow></div>
+    <div class="slds-p-around--x-large" ><c-make-s-a-m-l-assertion></c-make-s-a-m-l-assertion></div>
+    <div class="slds-p-around--x-large" ><c-jwt-bearer-flow scopes={selectedValues}></c-jwt-bearer-flow></div>
 </template>
