@@ -1,6 +1,12 @@
 import { LightningElement } from 'lwc';
+import getAccessToken from '@salesforce/apex/refreshTokenController.getAccessToken';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class RefreshTokenFlow extends LightningElement {
+    clientid = '3MVG9SemV5D80oBc_4KF2WNxqF4oFuu_3r7JbSX1n9fvF_lgKMAfyXVX592tkkHiZBzBTOaqM1WBIN_b80ReY';
+    clientsecret = '3588CFBF973CED5178DFD9338BC72BF11E44F5518FEDCFB6FD2C723D4164CA78';
+    refresh_token = '';
+    sessionId;
     get options() {
         return [
             { label: 'Access Connect REST API resources (chatter_api)', value: 'chatter_api' },
@@ -34,6 +40,24 @@ export default class RefreshTokenFlow extends LightningElement {
     selectedValues = '';
     unformattedString = [];
 
+    handleClientIdChange(event) {
+        this.clientid = event.target.value;
+        console.log(this.clientid);
+        this.sessionId = '';
+    }
+
+    handleClientSecretChange(event) {
+        this.clientsecret = event.target.value;
+        console.log(this.clientsecret);
+        this.sessionId = '';
+    }
+
+    handleRefreshTokenChange(event) {
+        this.refresh_token = event.target.value;
+        console.log(this.refresh_token);
+        this.sessionId = '';
+    }
+
     handleChange(event) {
         this.unformattedString = event.detail.value;
         const inputArray = JSON.stringify(this.unformattedString);
@@ -56,5 +80,49 @@ export default class RefreshTokenFlow extends LightningElement {
         }
         }
         console.log(this.selectedValues);
+    }
+
+    getAccessToken() {
+        getAccessToken({ clientId: this.clientid, clientSecret: this.clientsecret, refreshToken:this.refresh_token })
+        .then(result => {
+            console.log('Access Token:', result);
+            if (Object.keys(result)[0] === "200") {
+                this.sessionId = result["200"];
+                this.showToast('success', 'Access Token Generated', this.sessionId);
+            } else {
+                if (Object.keys(result)[0] === "400") {
+                    this.badRequest = result["400"];
+                    this.showToast('error', 'Your status code is 400', this.badRequest);
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error.body.message);
+                if (error.body.message.includes("Unauthorized endpoint, please check Setup->Security->Remote site settings. endpoint =")) {
+                    this.showRemoteSiteUrlAddMessage(error.body.message);
+                }
+                this.showToast('error', 'Error', error.body.message);
+        });
+    }
+
+    showToast(variant, title, message) {
+        const toastEvent = new ShowToastEvent({ variant, title, message });
+        this.dispatchEvent(toastEvent);
+    }
+    showRemoteSiteUrlAddMessage(errorMessage) {
+        const parts = errorMessage.split('endpoint = ');
+        if (parts.length >= 2) {
+            const endpointUrl = parts[1];
+            try {
+                const url = new URL(endpointUrl);
+                const baseUrl = url.protocol + '//' + url.host;
+                console.log('Base URL:', baseUrl);
+                this.showToast('info', 'Action', 'Please add the ' + baseUrl + ' URL to your Remote Site Settings.');
+            } catch (error) {
+                console.error('Error parsing URL:', error.message);
+            }
+        } else {
+            console.log('Endpoint not found in the error message.');
+        }
     }
 }

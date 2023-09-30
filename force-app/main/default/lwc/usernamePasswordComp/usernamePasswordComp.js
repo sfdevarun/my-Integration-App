@@ -9,6 +9,23 @@ export default class UsernamePasswordComp extends LightningElement {
     clientSecret = '3588CFBF973CED5178DFD9338BC72BF11E44F5518FEDCFB6FD2C723D4164CA78';
     sessionId;
     badRequest;
+    holder;
+    tokenValue = 'true';
+    tokenOptions = [
+        { label: 'Production', value: 'true' },
+        { label: 'Sandbox', value: 'false' }
+    ];
+
+    handleChange(event) {
+        const selectedOption = event.detail.value;
+        if (selectedOption === 'true') {
+            this.holder = (selectedOption === 'true');
+        } else {
+            this.holder = false;
+        }
+        console.log('Option selected with value: ' + this.holder);
+    }
+
     handleUsernameChange(event) {
         this.username = event.target.value;
         this.sessionId = '';
@@ -30,7 +47,7 @@ export default class UsernamePasswordComp extends LightningElement {
     }
 
     getAccessToken() {
-        getAccessToken({ username: this.username, password: this.password, clientId: this.clientId, clientSecret: this.clientSecret })
+        getAccessToken({ username: this.username, password: this.password, clientId: this.clientId, clientSecret: this.clientSecret, tokenFlag: this.holder })
             .then(result => {
                 // Handle access token response
                 console.log('Access Token:', result);

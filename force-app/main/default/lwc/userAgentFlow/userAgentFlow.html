@@ -1,5 +1,6 @@
 <template>
     <lightning-card title="User-Agent Flow" icon-name="action:announcement">
+        <lightning-helptext class="slds-p-around_medium" content="If you don’t include scopes in your request, all scopes assigned to the connected app are requested." icon-name="utility:salesforce1" slot="actions"></lightning-helptext>
         <div class="slds-p-around_medium">
             <lightning-input label="Client Id" value={clientid} onchange={handleClientIdChange} placeholder="Ex: 3MVG9SemV5D80oBc_4KF2WNxqF4oFuu_3r7JbSX1n9fvF_lgKMAfyXVX592tkkHiZBzBTOaqM1WBIN_b80ReY"></lightning-input>
             <lightning-input label="RedirectURI or Callback URL" value={redirectURI} onchange={handleRedirectURIChange} placeholder="Ex: https://login.salesforce.com/callback or https://login.salesforce.com/services/oauth2/success (for refresh token)"></lightning-input>

@@ -55,7 +55,7 @@ public with sharing class userAgentFlowController {
                     return null;
             }
         } catch (Exception e) {
-            throw new AuraHandledException('exceptionText >>> ' + e.getMessage());
+            throw new AuraHandledException('Error Message: ' + e.getMessage());
         }
     }
 }

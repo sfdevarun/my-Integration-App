@@ -1,8 +1,12 @@
 public with sharing class UsernamePasswordController {
     @AuraEnabled
-    public static Map<Integer, String> getAccessToken(String username, String password, String clientId, String clientSecret) {
+    public static Map<Integer, String> getAccessToken(String username, String password, String clientId, String clientSecret, Boolean tokenFlag) {
         HttpRequest request = new HttpRequest();
-        request.setEndpoint('https://login.salesforce.com/services/oauth2/token');
+        if (tokenFlag == true) {
+            request.setEndpoint('https://login.salesforce.com/services/oauth2/token');
+        } else {
+            request.setEndpoint('https://test.salesforce.com/services/oauth2/token');
+        }
         request.setMethod('POST');
         request.setHeader('Content-Type', 'application/x-www-form-urlencoded');
         request.setBody('grant_type=password' +

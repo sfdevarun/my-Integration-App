@@ -14,26 +14,31 @@ export default class JwtBearerFlow extends LightningElement {
 
     handleIssuerChange(event) {
         this.issuer = event.target.value;
+        console.log('issuer >>> ' + this.issuer);
         this.sessionId = '';
     }
 
     handleAudienceChange(event) {
         this.audience = event.target.value;
+        console.log('audience >>> ' + this.audience);
         this.sessionId = '';
     }
 
     handleSubjectChange(event) {
         this.subject = event.target.value;
+        console.log('subject >>> ' + this.subject);
         this.sessionId = '';
     }
 
     handleCertificateChange(event) {
         this.certificate = event.target.value;
+        console.log('certificate >>> ' + this.certificate);
         this.sessionId = '';
     }
 
     handleTokenEndpointChange(event) {
         this.tokenEndpoint = event.target.value;
+        console.log('tokenEndpoint >>> ' + this.tokenEndpoint);
         this.sessionId = '';
     }
 
