@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <brand>
+        <headerColor>#0070D2</headerColor>
+        <logo>X17179871_ironmanlogohdmin</logo>
+        <logoVersion>1</logoVersion>
+        <shouldOverrideOrgTheme>true</shouldOverrideOrgTheme>
+    </brand>
+    <formFactors>Small</formFactors>
+    <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>true</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
+    <label>OAuth 2.0 Flows</label>
+    <navType>Standard</navType>
+    <setupExperience>all</setupExperience>
+    <tabs>OAuth_2_0_SAML_Bearer_Assertion_Flow_App</tabs>
+    <uiType>Lightning</uiType>
+    <utilityBar>SAML_Bearer_Assertion_Flow_UtilityBar</utilityBar>
+</CustomApplication>
