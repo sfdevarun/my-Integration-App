@@ -15,8 +15,11 @@ global with sharing class SAMLAssertionController {
             dummy = resMap.get(200);
             System.debug(dummy instanceof String);
             actualResponse = String.valueOf(dummy);
-        } else { if (resMap.containsKey(400)) {
-            dummy = resMap.get(400);
+        } else { if ((resMap.containsKey(400)) || (resMap.containsKey(404))) {
+            Set<Integer> keySet = new Set<Integer>();
+            keySet = resMap.keySet();
+            Integer firstelement = (new List<Integer>(keySet))[0];
+            dummy = resMap.get(firstelement);
             actualResponse = String.valueOf(dummy);
                 } 
             }

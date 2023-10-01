@@ -69,15 +69,32 @@ export default class MakeSAMLAssertion extends LightningElement {
         makeSAMLAssertion({ issuer: this.issuer, encodedKey: this.encodedKey, subject: this.subject, Audience: this.audience, Recipient: this.recipient })
             .then((result) => {
                 console.log(result);
-                const jsonObject = this.parseStringToJsonObject(result);
-                console.log(jsonObject);
-                if (jsonObject['error'] === undefined) {
-                    this.sessionId = jsonObject.access_token;
-                    this.showToast('success', 'Access Token Generated', this.sessionId);
+                if (result === 'URL No Longer Exists. You have attempted to reach a URL that no longer exists on salesforce.com.') {
+                    this.showToast('error', 'Error', result);
                 } else {
-                    this.exceptionMsg = jsonObject.error_description;
-                    this.exception = jsonObject.error;
-                    this.showToast('error', 'Error is ' + this.exception, this.exceptionMsg);
+                    // if (result === 'The error message is invalid_grant and the description is user hasn\'t approved this consumer. You made a Bad Request.') {
+                    //     this.showToast('error', 'Error', result);
+                    // } else {
+                    //     if (result === 'The error message is invalid_grant and the description is audience is invalid. You made a Bad Request.') {
+                    //         this.showToast('error', 'Error', result);
+                    //     } else {
+                    //         if (result === 'The error message is invalid_client_id and the description is client identifier invalid. You made a Bad Request.') {
+                    //             this.showToast('error', 'Error', result);
+                    //         } else {
+                                const jsonObject = this.parseStringToJsonObject(result);
+                                console.log('JSON parsed error >>> ' + jsonObject);
+                                if (jsonObject['error'] === undefined) {
+                                    this.sessionId = jsonObject.access_token;
+                                    this.showToast('success', 'Access Token Generated', this.sessionId);
+                                } else {
+                                    this.exceptionMsg = jsonObject.error_description;
+                                    this.exception = jsonObject.error;
+                                    this.showToast('error', 'Error is ' + this.exception, this.exceptionMsg);
+                                }
+                            //}
+                        //}
+                    //}
+                    
                 }
             })
             .catch((error) => {

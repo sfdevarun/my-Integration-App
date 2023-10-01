@@ -106,9 +106,24 @@ private String preCannonicalizedResponse = '<saml:Assertion xmlns:saml="urn:oasi
             httpResponse res = h.send(req);
             System.debug('\n\nRESPONSE: ' + res.getBody());
             System.debug('\n\nRESPONSE: ' + res.getStatusCode() + '  ' + res.getStatus());
-            resp.put(res.getStatusCode(), (Object)JSON.deserializeUntyped(res.getBody()));
-            System.debug('test return Map >>> ' + resp);
-            return resp;
+            if (res.getStatusCode() == 200) {
+                resp.put(res.getStatusCode(), (Object)JSON.deserializeUntyped(res.getBody()));
+                return resp;
+            } else {
+                if (res.getStatusCode() == 400 || res.getStatusCode() == 404) {
+                    if (res.getBody().contains('You have attempted to reach a URL that no longer exists on salesforce.com')) {
+                        resp.put(res.getStatusCode(), 'URL No Longer Exists. You have attempted to reach a URL that no longer exists on salesforce.com.');
+                        return resp;
+                    } else {
+                        Map<String, Object> jsonResponse = (Map<String, Object>)JSON.deserializeUntyped(res.getBody());
+                            // resp.put(res.getStatusCode(), 'The error message is ' + (String)jsonResponse.get('error') + ' and the description is ' + (String)jsonResponse.get('error_description') + '. You made a ' + res.getStatus() + '.');
+                            resp.put(res.getStatusCode(), jsonResponse);
+                            return resp;
+                    }
+                } else {
+                    return null;
+                }
+            }
         } catch (Exception e) {
             throw new AuraHandledException('Error Message: ' + e.getMessage());
         }
