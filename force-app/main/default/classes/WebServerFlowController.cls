@@ -79,7 +79,17 @@ public with sharing class WebServerFlowController {
                 Map<String, Object> jsonResponse = (Map<String, Object>)JSON.deserializeUntyped(response.getBody());
                 System.debug('response => ' + response.getBody());
                 System.debug('json response => ' + jsonResponse);
-                resp.put(200, (String)jsonResponse.get('access_token'));
+                // resp.put(200, (String)jsonResponse.get('access_token'));
+                Map<String, Object> data = new Map<String, Object>();
+                data.put('access_token', (String)jsonResponse.get('access_token'));
+                data.put('id', (String)jsonResponse.get('id'));
+                data.put('instance_url', (String)jsonResponse.get('instance_url'));
+                data.put('refresh_token', (String)jsonResponse.get('refresh_token'));
+                data.put('scope', (String)jsonResponse.get('scope'));
+                data.put('token_type', (String)jsonResponse.get('token_type'));
+                String jsonString = JSON.serialize(data);
+                System.debug('jsonString >>> ' + jsonString);
+                resp.put(200, jsonString);
                 return resp;
             } else {
                 if (response.getStatusCode() == 400) {

@@ -3,9 +3,11 @@ public class SAMLBearerAssertion {
     public String subject;
     //private String issuer = '3MVG9y6x0357HlefuPJYJs5i7W3xONzPT6oaKQrUtZnhE6u3.oILkJQEdMsV94QitOE8TENTetwB34gWqqcYD';
     public String issuer;
-    private String audience = 'https://login.salesforce.com';
-    private String action = 'https://login.salesforce.com/services/oauth2/token'; 
-    
+    //private String audience = 'https://login.salesforce.com';
+    //private String action = 'https://login.salesforce.com/services/oauth2/token';
+    public String audience;
+    public String action;
+
     private string notBefore;
     private String notOnOrAfter;
 
@@ -22,6 +24,8 @@ private String preCannonicalizedResponse = '<saml:Assertion xmlns:saml="urn:oasi
     
     public SAMLBearerAssertion() {
         subject = subject;
+        audience = audience;
+        action = action;
         
         datetime nowDt = datetime.now();
         Long nowLong = nowDt.getTime();
@@ -88,21 +92,25 @@ private String preCannonicalizedResponse = '<saml:Assertion xmlns:saml="urn:oasi
     public Map<Integer,Object> postSAML()
    {
         Map<Integer,Object> resp = new Map<Integer,Object>();
-        String saml = getResult();
-        System.debug('\n===============SAML==============\n: ' + saml);
-        http h = new http();
-        httpRequest req = new httpRequest();
-        req.setHeader('Content-Type','application/x-www-form-urlencoded');
-        req.setMethod('POST');
-        String param = 'grant_type=' + encodingUtil.urlEncode('urn:ietf:params:oauth:grant-type:saml2-bearer','UTF-8')+'&assertion=' + base64URLencode(blob.valueOf(saml)); 
-        req.setBody(param);
-        
-        req.setEndpoint(action);
-        httpResponse res = h.send(req);
-        System.debug('\n\nRESPONSE: ' + res.getBody());
-        System.debug('\n\nRESPONSE: ' + res.getStatusCode() + '  ' + res.getStatus());
-        resp.put(res.getStatusCode(), (Object)JSON.deserializeUntyped(res.getBody()));
-        System.debug('test return Map >>> ' + resp);
-        return resp;
+        try {
+            String saml = getResult();
+            System.debug('\n===============SAML==============\n: ' + saml);
+            http h = new http();
+            httpRequest req = new httpRequest();
+            req.setHeader('Content-Type','application/x-www-form-urlencoded');
+            req.setMethod('POST');
+            String param = 'grant_type=' + encodingUtil.urlEncode('urn:ietf:params:oauth:grant-type:saml2-bearer','UTF-8')+'&assertion=' + base64URLencode(blob.valueOf(saml)); 
+            req.setBody(param);
+            
+            req.setEndpoint(action);
+            httpResponse res = h.send(req);
+            System.debug('\n\nRESPONSE: ' + res.getBody());
+            System.debug('\n\nRESPONSE: ' + res.getStatusCode() + '  ' + res.getStatus());
+            resp.put(res.getStatusCode(), (Object)JSON.deserializeUntyped(res.getBody()));
+            System.debug('test return Map >>> ' + resp);
+            return resp;
+        } catch (Exception e) {
+            throw new AuraHandledException('Error Message: ' + e.getMessage());
+        }
    }
 }

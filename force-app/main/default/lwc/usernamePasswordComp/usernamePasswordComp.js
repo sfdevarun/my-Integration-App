@@ -16,6 +16,13 @@ export default class UsernamePasswordComp extends LightningElement {
         { label: 'Sandbox', value: 'false' }
     ];
 
+    connectedCallback() {
+        if (this.tokenValue === 'true') {
+            //code
+            this.holder = true;
+        }
+    }
+
     handleChange(event) {
         const selectedOption = event.detail.value;
         if (selectedOption === 'true') {
@@ -24,6 +31,7 @@ export default class UsernamePasswordComp extends LightningElement {
             this.holder = false;
         }
         console.log('Option selected with value: ' + this.holder);
+        this.sessionId = '';
     }
 
     handleUsernameChange(event) {

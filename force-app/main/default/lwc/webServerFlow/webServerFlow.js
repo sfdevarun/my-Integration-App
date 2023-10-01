@@ -16,6 +16,7 @@ export default class WebServerFlow extends NavigationMixin(LightningElement) {
     @api scopes = '';
     toggle;
     badRequest;
+    refreshToken;
 
     handleClientIdChange(event) {
         this.clientid = event.target.value;
@@ -35,6 +36,7 @@ export default class WebServerFlow extends NavigationMixin(LightningElement) {
 
     handleClientSecretChange(event) {
         this.clientsecret = event.target.value;
+        this.sessionId = '';
         console.log(this.clientsecret);
     }
 
@@ -97,10 +99,25 @@ export default class WebServerFlow extends NavigationMixin(LightningElement) {
     getAccessToken() {
         getAccessToken({ authorizationCode: this.authorizationCode, redirectURI: this.redirectURI, clientid: this.clientid, clientsecret: this.clientsecret })
         .then(result => {
-            console.log('Access Token:', result);
             if (Object.keys(result)[0] === "200") {
-                this.sessionId = result["200"];
+                const jsonString = result["200"];
+                const res = JSON.parse(jsonString);
+                const tokenType = res.token_type;
+                const scope = res.scope;
+                this.refreshToken = res.refresh_token;
+                const instanceUrl = res.instance_url;
+                const id = res.id;
+                this.sessionId = res.access_token;
+                console.log('token_type:', tokenType);
+                console.log('scope:', scope);
+                console.log('refresh_token:', this.refreshToken);
+                console.log('instance_url:', instanceUrl);
+                console.log('id:', id);
+                console.log('access_token:', this.sessionId);
                 this.showToast('success', 'Access Token Generated', this.sessionId);
+                if (this.refreshToken !== null && this.refreshToken !== undefined && this.refreshToken !== '') {
+                    this.showToast('success', 'Refresh Token Generated', this.refreshToken);
+                }
             } else {
                 if (Object.keys(result)[0] === "400") {
                     this.badRequest = result["400"];

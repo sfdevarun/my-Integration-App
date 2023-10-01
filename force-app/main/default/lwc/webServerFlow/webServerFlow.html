@@ -20,6 +20,7 @@
                 <div class="slds-p-top--small"><lightning-button label="Get Access Token" variant="brand" onclick={getAccessToken}></lightning-button></div>
             </template>
             <div class="slds-p-top--small" if:true={sessionId}><b>Session ID: {sessionId}</b></div>
+            <div class="slds-p-top--small" if:true={refreshToken}><b>Refresh Token: {refreshToken}</b></div>
         </div>
     </lightning-card>
 </template>

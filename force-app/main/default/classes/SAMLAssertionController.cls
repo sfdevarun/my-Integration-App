@@ -1,10 +1,12 @@
 @RestResource(urlMapping='/samlAssertion/*')
 global with sharing class SAMLAssertionController {
     @AuraEnabled @HttpPost
-    global static String postSAML(String issuer, String encodedKey, String subject) {
+    global static String postSAML(String issuer, String encodedKey, String subject, String Audience, String Recipient) {
         String actualResponse;
         Object dummy;
         SAMLBearerAssertion samlAssertion = new SAMLBearerAssertion();
+        samlAssertion.audience = Audience;
+        samlAssertion.action = Recipient;
         samlAssertion.issuer = issuer;
         samlAssertion.encodedKey = encodedKey;
         samlAssertion.subject = subject; 

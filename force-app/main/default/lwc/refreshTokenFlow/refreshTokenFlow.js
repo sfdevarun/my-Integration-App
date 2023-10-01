@@ -7,6 +7,20 @@ export default class RefreshTokenFlow extends LightningElement {
     clientsecret = '3588CFBF973CED5178DFD9338BC72BF11E44F5518FEDCFB6FD2C723D4164CA78';
     refresh_token = '';
     sessionId;
+    holder;
+    value = 'true';
+
+    // get value() {
+    //     return 'true';
+    // }
+    
+    get tokenOptions() {
+        return [
+            { label: 'Production', value: 'true' },
+            { label: 'Sandbox', value: 'false' }
+        ];
+    }
+
     get options() {
         return [
             { label: 'Access Connect REST API resources (chatter_api)', value: 'chatter_api' },
@@ -39,6 +53,25 @@ export default class RefreshTokenFlow extends LightningElement {
     flag = false;
     selectedValues = '';
     unformattedString = [];
+
+    connectedCallback() {
+        if (this.value === 'true') {
+            //code
+            this.holder = true;
+            console.log('holder >>> ' + this.holder);
+        }
+    }
+
+    handleEnvChange(event) {
+        const selectedOption = event.detail.value;
+        if (selectedOption === 'true') {
+            this.holder = (selectedOption === 'true');
+        } else {
+            this.holder = false;
+        }
+        console.log('Option selected with value: ' + this.holder);
+        this.sessionId = '';
+    }
 
     handleClientIdChange(event) {
         this.clientid = event.target.value;
@@ -83,7 +116,7 @@ export default class RefreshTokenFlow extends LightningElement {
     }
 
     getAccessToken() {
-        getAccessToken({ clientId: this.clientid, clientSecret: this.clientsecret, refreshToken:this.refresh_token })
+        getAccessToken({ clientId: this.clientid, clientSecret: this.clientsecret, refreshToken:this.refresh_token, tokenFlag: this.holder })
         .then(result => {
             console.log('Access Token:', result);
             if (Object.keys(result)[0] === "200") {

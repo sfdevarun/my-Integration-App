@@ -17,6 +17,14 @@
                                     <lightning-input label="Client Id" value={clientid} onchange={handleClientIdChange} placeholder="Ex: 3MVG9SemV5D80oBc_4KF2WNxqF4oFuu_3r7JbSX1n9fvF_lgKMAfyXVX592tkkHiZBzBTOaqM1WBIN_b80ReY"></lightning-input>
                                     <lightning-input label="Client Secret" type="password" value={clientsecret} onchange={handleClientSecretChange} placeholder="Ex: 3588CFBF973CED5178DFD9338BC72BF11E44F5518FEDCFB6FD2C723D4164CA78"></lightning-input>
                                     <lightning-input label="Refresh Token" value={refresh_token} onchange={handleRefreshTokenChange} placeholder="Ex: "></lightning-input>
+                                    <lightning-radio-group name="radioGroup"
+                                                label="Token Environment"
+                                                options={tokenOptions}
+                                                value={value}
+                                                type="button"
+                                                onchange={handleEnvChange}
+                                                required>
+                                    </lightning-radio-group>
                                     <div class="slds-p-top--small"><lightning-button label="Get Access Token" variant="brand" onclick={getAccessToken}></lightning-button></div>
                                 </div>
                                 <div class="slds-p-around_medium" if:true={sessionId}><b>Session ID: {sessionId}</b></div>

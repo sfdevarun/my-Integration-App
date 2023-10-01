@@ -35,6 +35,20 @@ export default class MakeSAMLAssertion extends LightningElement {
     sessionId;
     exception;
     exceptionMsg;
+    audience = 'https://login.salesforce.com';
+    recipient = 'https://login.salesforce.com/services/oauth2/token';
+
+    handleAudienceChange(event) {
+        this.audience = event.target.value;
+        console.log('audience >>> ' + this.audience);
+        this.sessionId = '';
+    }
+
+    handleRecipientChange(event) {
+        this.recipient = event.target.value;
+        console.log('recipient >>> ' + this.recipient);
+        this.sessionId = '';
+    }
 
     handleIssuerChange(event) {
         this.issuer = event.target.value;
@@ -52,7 +66,7 @@ export default class MakeSAMLAssertion extends LightningElement {
     }
 
     handleButtonClick() {
-        makeSAMLAssertion({ issuer: this.issuer, encodedKey: this.encodedKey, subject: this.subject })
+        makeSAMLAssertion({ issuer: this.issuer, encodedKey: this.encodedKey, subject: this.subject, Audience: this.audience, Recipient: this.recipient })
             .then((result) => {
                 console.log(result);
                 const jsonObject = this.parseStringToJsonObject(result);

@@ -1,8 +1,12 @@
 public with sharing class refreshTokenController {
     @AuraEnabled
-    public static Map<Integer, String> getAccessToken(String clientId, String clientSecret, String refreshToken) {
+    public static Map<Integer, String> getAccessToken(String clientId, String clientSecret, String refreshToken, Boolean tokenFlag) {
         HttpRequest request = new HttpRequest();
-        request.setEndpoint('https://login.salesforce.com/services/oauth2/token');
+        if (tokenFlag == true) {
+            request.setEndpoint('https://login.salesforce.com/services/oauth2/token');
+        } else {
+            request.setEndpoint('https://test.salesforce.com/services/oauth2/token');
+        }
         request.setMethod('POST');
         request.setHeader('Content-Type', 'application/x-www-form-urlencoded');
         request.setBody('grant_type=refresh_token' +
