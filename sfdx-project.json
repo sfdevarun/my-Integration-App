@@ -2,11 +2,19 @@
   "packageDirectories": [
     {
       "path": "force-app",
-      "default": true
+      "default": true,
+      "package": "arunIntTool",
+      "versionName": "ver 1.0",
+      "versionNumber": "1.0.0.NEXT",
+      "versionDescription": "Arun's Integration Tool"
     }
   ],
   "name": "myIntApp",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "58.0"
+  "sourceApiVersion": "58.0",
+  "packageAliases": {
+    "arunIntTool": "0Ho1Q000000blPXSAY",
+    "arunIntTool@1.0.0-1": "04t1Q000001QtkSQAS"
+  }
 }

@@ -14,7 +14,7 @@
     <label>OAuth 2.0 Flows</label>
     <navType>Standard</navType>
     <setupExperience>all</setupExperience>
-    <tabs>OAuth_2_0_SAML_Bearer_Assertion_Flow_App</tabs>
+    <tabs>OAuth_2_0_Flows_App</tabs>
     <uiType>Lightning</uiType>
-    <utilityBar>SAML_Bearer_Assertion_Flow_UtilityBar</utilityBar>
+    <!-- <utilityBar>SAML_Bearer_Assertion_Flow_UtilityBar</utilityBar> -->
 </CustomApplication>

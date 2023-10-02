@@ -38,8 +38,14 @@ public with sharing class JWTController {
                                 throw new AuraHandledException('The error message is ' + (String)errorMap.get('error') + ' and description is ' + (String)errorMap.get('error_description') + '. The Subject/Username is incorrect. Please pass the correct value');
                                 } else { if ((String)errorMap.get('error_description') == 'client identifier invalid') {
                                     throw new AuraHandledException('The error message is ' + (String)errorMap.get('error') + ' and description is ' + (String)errorMap.get('error_description') + '. The Issuer/client Id is incorrect. Please pass the correct value');
-                                    } else {
-                                    throw new AuraHandledException('The error message is ' + (String)errorMap.get('error') + ' and description is ' + (String)errorMap.get('error_description') + '. The Audience is incorrect. Please pass the correct value');
+                                    } else { if ((String)errorMap.get('error_description') == 'invalid client credentials') {
+                                        throw new AuraHandledException('The error message is ' + (String)errorMap.get('error') + ' and description is ' + (String)errorMap.get('error_description')+ '.');
+                                        } else { if ((String)errorMap.get('error_description') == 'audience is invalid') {
+                                            throw new AuraHandledException('The error message is ' + (String)errorMap.get('error') + ' and description is ' + (String)errorMap.get('error_description') + '. The Audience is incorrect. Please pass the correct value');
+                                            } else {
+                                                throw new AuraHandledException('The error message is ' + (String)errorMap.get('error') + ' and description is ' + (String)errorMap.get('error_description') + '.');
+                                                }
+                                            }
                                         }
                                     }
                             }
